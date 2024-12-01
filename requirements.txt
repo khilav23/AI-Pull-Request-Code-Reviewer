@@ -1,0 +1,8 @@
+fastapi
+slowapi
+redis
+python-dotenv
+pydantic
+celery
+requests
+google-generativeai
