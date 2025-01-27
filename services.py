@@ -73,19 +73,27 @@ def analyze_code_with_gemini(files_data: list) -> dict:
         logging.error(f"Error generating structured results: {str(e)}")
         return None
 
-@celery_app.task(bind=True)
-def analyze_pr_task(self, code_snippet: str):
-    """Task to analyze a code snippet using Gemini."""
+# @celery_app.task(bind=True)
+# def analyze_pr_task(self, code_snippet: str):
+#     """Task to analyze a code snippet using Gemini."""
+#     try:
+
+#         logging.info("Starting code analysis with Gemini.")
+#         analysis_results = analyze_code_with_gemini(code_snippet)
+
+#         return analysis_results
+#     except Exception as e:
+#         logging.error(f"Task failed: {str(e)}")
+#         raise self.retry(exc=e, countdown=5, max_retries=3)
+@celery_app.task(bind=True, name="analyze_pr_task")
+def analyze_pr_task(self, files_data: list):  # Changed parameter
     try:
-
         logging.info("Starting code analysis with Gemini.")
-        analysis_results = analyze_code_with_gemini(code_snippet)
-
+        analysis_results = analyze_code_with_gemini(files_data)  # Pass list directly
         return analysis_results
     except Exception as e:
         logging.error(f"Task failed: {str(e)}")
         raise self.retry(exc=e, countdown=5, max_retries=3)
-    
 #--------------------------------------------------------------------------------------------
 import logging
 from openai import OpenAI
