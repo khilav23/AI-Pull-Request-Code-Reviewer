@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 
-# Load environment variables from .env file
+# Load environment variables from .env file  
 load_dotenv()
 
 REDIS_URL = os.getenv("REDIS_URL")
